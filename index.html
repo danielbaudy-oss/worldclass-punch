@@ -30,43 +30,78 @@
       align-items: center;
       justify-content: center;
       color: white;
+      padding: 20px;
     }
     
-    .loader {
+    .container {
       text-align: center;
-      padding: 40px;
+      max-width: 400px;
     }
     
     .globe {
-      font-size: 64px;
+      font-size: 80px;
       margin-bottom: 20px;
-      animation: pulse 1.5s ease-in-out infinite;
-    }
-    
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.1); opacity: 0.8; }
     }
     
     h1 {
-      font-size: 24px;
+      font-size: 28px;
       font-weight: 700;
       margin-bottom: 10px;
     }
     
-    p {
+    .subtitle {
       font-size: 16px;
       opacity: 0.8;
+      margin-bottom: 30px;
+    }
+    
+    .open-btn {
+      display: inline-block;
+      background: white;
+      color: #092b50;
+      padding: 18px 50px;
+      border-radius: 14px;
+      font-size: 18px;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      transition: transform 0.2s, box-shadow 0.2s;
+      border: none;
+      cursor: pointer;
+    }
+    
+    .open-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 25px rgba(0,0,0,0.3);
+    }
+    
+    .instructions {
+      margin-top: 40px;
+      padding: 20px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 12px;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    
+    .instructions strong {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+    
+    .loading {
+      display: none;
     }
     
     .spinner {
-      width: 30px;
-      height: 30px;
-      border: 3px solid rgba(255,255,255,0.3);
+      width: 40px;
+      height: 40px;
+      border: 4px solid rgba(255,255,255,0.3);
       border-top-color: white;
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
-      margin: 20px auto 0;
+      margin: 20px auto;
     }
     
     @keyframes spin {
@@ -75,16 +110,53 @@
   </style>
 </head>
 <body>
-  <div class="loader">
+  <!-- First Visit: Show instructions -->
+  <div class="container" id="firstVisit">
     <div class="globe">🌍</div>
     <h1>WorldClassBCN</h1>
-    <p>Loading Time Punch...</p>
+    <p class="subtitle">Time Punch Tool</p>
+    
+    <button class="open-btn" onclick="openApp()">
+      Open App →
+    </button>
+    
+    <div class="instructions">
+      <strong>📱 First time? Add to Home Screen!</strong>
+      Tap Share ⬆️ → "Add to Home Screen" to get the globe icon. After that, it will open automatically!
+    </div>
+  </div>
+  
+  <!-- Return Visit: Loading screen -->
+  <div class="container loading" id="returning">
+    <div class="globe">🌍</div>
+    <h1>WorldClassBCN</h1>
+    <p class="subtitle">Opening Time Punch...</p>
     <div class="spinner"></div>
   </div>
   
   <script>
-    // Redirect to Apps Script
-    window.location.href = "https://script.google.com/macros/s/AKfycbwBR2EUYaZiqOWxQH0htxyB0ttVOaBcPXjR-R63UP8Cez8Wt88i4S1UaKl3unxlMPo3/exec";
+    const APP_URL = "https://script.google.com/macros/s/AKfycbwBR2EUYaZiqOWxQH0htxyB0ttVOaBcPXjR-R63UP8Cez8Wt88i4S1UaKl3unxlMPo3/exec";
+    
+    // Check if user has visited before
+    const hasVisited = localStorage.getItem('worldclass_visited');
+    
+    if (hasVisited) {
+      // Returning user - auto redirect
+      document.getElementById('firstVisit').style.display = 'none';
+      document.getElementById('returning').style.display = 'block';
+      
+      setTimeout(function() {
+        window.location.href = APP_URL;
+      }, 500);
+    }
+    
+    function openApp() {
+      // Mark as visited
+      localStorage.setItem('worldclass_visited', 'true');
+      
+      // Redirect
+      window.location.href = APP_URL;
+    }
   </script>
 </body>
 </html>
