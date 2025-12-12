@@ -19,6 +19,19 @@
   <link rel="icon" type="image/png" sizes="192x192" href="https://i.imgur.com/1E0cRfr.jpeg">
   <link rel="icon" href="https://i.imgur.com/1E0cRfr.jpeg">
   
+  <!-- Preconnect to Google for faster redirect -->
+  <link rel="preconnect" href="https://script.google.com">
+  <link rel="dns-prefetch" href="https://script.google.com">
+  
+  <script>
+    // INSTANT redirect for returning users - runs before page even renders
+    const APP_URL = "https://script.google.com/macros/s/AKfycbxrDZJayAKDwidDM1wc6vJRu--vj9OvDdAAXfByQwujRa6-R0BBH88P9FsLWWGY50tVLQ/exec";
+    
+    if (localStorage.getItem('worldclass_visited')) {
+      window.location.replace(APP_URL);
+    }
+  </script>
+  
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     
@@ -92,29 +105,10 @@
       margin-bottom: 10px;
       font-size: 16px;
     }
-    
-    .loading {
-      display: none;
-    }
-    
-    .spinner {
-      width: 40px;
-      height: 40px;
-      border: 4px solid rgba(255,255,255,0.3);
-      border-top-color: white;
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-      margin: 20px auto;
-    }
-    
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
   </style>
 </head>
 <body>
-  <!-- First Visit: Show instructions -->
-  <div class="container" id="firstVisit">
+  <div class="container">
     <img src="https://i.imgur.com/1E0cRfr.jpeg" alt="WorldClass" class="logo">
     <h1>WorldClassBCN</h1>
     <p class="subtitle">Time Punch Tool</p>
@@ -129,36 +123,10 @@
     </div>
   </div>
   
-  <!-- Return Visit: Loading screen -->
-  <div class="container loading" id="returning">
-    <img src="https://i.imgur.com/1E0cRfr.jpeg" alt="WorldClass" class="logo">
-    <h1>WorldClassBCN</h1>
-    <p class="subtitle">Opening Time Punch...</p>
-    <div class="spinner"></div>
-  </div>
-  
   <script>
-    const APP_URL = "https://script.google.com/macros/s/AKfycbxrDZJayAKDwidDM1wc6vJRu--vj9OvDdAAXfByQwujRa6-R0BBH88P9FsLWWGY50tVLQ/exec";
-    
-    // Check if user has visited before
-    const hasVisited = localStorage.getItem('worldclass_visited');
-    
-    if (hasVisited) {
-      // Returning user - auto redirect
-      document.getElementById('firstVisit').style.display = 'none';
-      document.getElementById('returning').style.display = 'block';
-      
-      setTimeout(function() {
-        window.location.href = APP_URL;
-      }, 500);
-    }
-    
     function openApp() {
-      // Mark as visited
       localStorage.setItem('worldclass_visited', 'true');
-      
-      // Redirect
-      window.location.href = APP_URL;
+      window.location.replace("https://script.google.com/macros/s/AKfycbxrDZJayAKDwidDM1wc6vJRu--vj9OvDdAAXfByQwujRa6-R0BBH88P9FsLWWGY50tVLQ/exec");
     }
   </script>
 </body>
